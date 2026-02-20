@@ -1,25 +1,14 @@
-import { Sequelize } from "sequelize";
-import dotenv from 'dotenv'
-import colors from 'colors'
-dotenv.config()
+// src/config/db.ts
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from 'pg';
+import 'dotenv/config';
 
-const db = new Sequelize( process.env.DATABASE_URL, {
-    models: [__dirname + '/../models/**/*'],
-    logging: false,
-    dialectOptions: {
-        ssl: {
-            require: false
-        }
-    }
-})
+const connectionString = process.env.DATABASE_URL;
 
-export async function connectDB() {
-    try {
-        await db.authenticate()
-        db.sync()
-        console.log( colors.blue.bold('Conexion exitosa a la base de datos'));   
-    } catch (error) {
-        // console.log(error);
-        console.log( colors.red.bold('Fallo la conexion'));
-    }
-}
+// Usamos un Pool de pg para gestionar múltiples consultas de forma eficiente
+const pool = new pg.Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+
+// Exportamos una única instancia de Prisma
+export const prisma = new PrismaClient({ adapter }); 
