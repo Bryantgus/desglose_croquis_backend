@@ -1,27 +1,12 @@
 import { Request, Response } from "express";
-import { z } from "zod";
 import { prisma } from "../config/db";
 import { catchAsync } from "../middleware/catchAsync";
+import { createOrden, editarOrden } from "./validation";
 
-const createOrden = z.object({
-  cliente: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-  estado: z.string().refine((val) => ["Pendiente", "Procesando", "Completado"].includes(val), {
-    message: "Estado no válido"
-  }),
-  descripcion: z.string().optional(),
-  asignadoA: z.string().optional()
-});
 
-const editarOrden = z.object({
-  cliente: z.string().min(3, "El nombre debe tener al menos 3 caracteres").optional(),
-  estado: z.string().refine((val) => ["Pendiente", "Procesando", "Completado"].includes(val), {
-    message: "Estado no válido"
-  }).optional(),
-  descripcion: z.string().optional(),
-  asignadoA: z.string().optional()
-})
 
 export class OrdenController {
+  
   static create = catchAsync(async (req: Request, res: Response) => {
     const validatedData = createOrden.parse(req.body);
 
