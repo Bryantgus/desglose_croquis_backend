@@ -8,10 +8,23 @@ datasource db {
 }
 
 model Orden {
-  id      Int    @id @default(autoincrement())
-  cliente String
-  fecha   String
-  estado  String
+  id          Int         @id @default(autoincrement())
+  cliente     String
+  fecha       String
+  estado      String
   descripcion String?
-  asignadoA String?
+  asignadoA   String?
+  itemOrdens  ItemOrden[]
+}
+
+model ItemOrden {
+  id          Int    @id @default(autoincrement())
+  etiqueta    String
+  ancho       String
+  alto        String
+  colorPerfil String
+  tipoCristal String
+  vias        Int
+  orden       Orden  @relation(fields: [ordenId], references: [id])
+  ordenId     Int
 }
