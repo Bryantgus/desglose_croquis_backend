@@ -14,6 +14,10 @@ app.use(cors({
 
 app.use(express.json())
 
+app.get('/api/server_active', (req, res) => {
+  return res.status(200).send();
+});
+
 app.use('/api/orden', OrdenRouter)
 app.use(globalErrorHandler);
 
