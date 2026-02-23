@@ -6,7 +6,7 @@ import { createOrden, editarOrden } from "./validation";
 
 
 export class OrdenController {
-  
+
   static create = catchAsync(async (req: Request, res: Response) => {
     const validatedData = createOrden.parse(req.body);
 
@@ -27,7 +27,6 @@ export class OrdenController {
 
   static modify = async (req: Request, res: Response) => {
     const { id } = req.params
-    console.log("ID recibido:", id);
     const validatedData = editarOrden.parse(req.body);
 
     const ordenModificada = await prisma.orden.update({
@@ -42,4 +41,15 @@ export class OrdenController {
     res.status(201).json(ordenModificada);
 
   }
+
+  static delete = async (req: Request, res: Response) => {
+    const { id } = req.params
+    await prisma.orden.delete({
+      where: {
+        id: Number(id)
+      }
+    });
+     res.status(204).json({message: 'Orden Eliminada Correctamente'});
+  }
 }
+
