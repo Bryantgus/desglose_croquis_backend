@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/db";
 import { catchAsync } from "../middleware/catchAsync";
-import { createOrden, editarOrden } from "./validation";
-
+import { createOrden, editarOrden } from "./zodValidation/OrdenValidation";
 
 
 export class OrdenController {

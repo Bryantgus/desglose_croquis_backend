@@ -4,6 +4,7 @@ import { OrdenController } from './controllers/OrdenController'
 import OrdenRouter from './routes/OrdenRouter'
 import { globalErrorHandler } from './middleware/errorHandler'
 import cors from 'cors'
+import ItemOrdenRouter from './routes/ItemOrdenRouter'
 const app = express()
 
 app.use(cors({
@@ -18,7 +19,8 @@ app.get('/api/server_active', (req, res) => {
   return res.status(200).send();
 });
 
-app.use('/api/orden', OrdenRouter)
+app.use('/api/orden', OrdenRouter);
+app.use('/api/item_orden', ItemOrdenRouter)
 app.use(globalErrorHandler);
 
 export default app

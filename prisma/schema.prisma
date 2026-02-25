@@ -22,6 +22,7 @@ model ItemOrden {
   etiqueta    String
   ancho       String
   alto        String
+  tipoPerfil  String
   colorPerfil String
   tipoCristal String
   vias        Int
