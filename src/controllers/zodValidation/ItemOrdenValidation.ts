@@ -51,11 +51,16 @@ export const updateItemOrden = z.object({
   }).optional(),
   alto: z.string().refine(validarMedida, {
     message: `Formato inválido. Use número entero (ej: "36") o entero + fracción (ej: "36 3/4")`
-  }),
+  }).optional(),
   colorPerfil: z.string().refine((val) => COLORES_PERFIL.includes(val), {
     message: `Color no válido. Debe ser uno de: ${COLORES_PERFIL.join(', ')}`
   }).optional(),
   tipoCristal: z.string().refine((val) => TIPO_CRISTAL.includes(val), {
+    message: `Tipo de Cristal no valido. Debe ser uno de: ${TIPO_CRISTAL.join(', ')}`
+  }).optional(),
+  tipoPerfil: z.string().refine((val) => TIPO_PERFIL.includes(val), {
     message: `Tipo de Perfl no valido. Debe ser uno de: ${TIPO_PERFIL.join(', ')}`
-  }).optional()
+  }).optional(),
+  vias: z.number().int().min(1).max(4).optional(),
+  etiqueta: z.string().max(20).optional()
 })

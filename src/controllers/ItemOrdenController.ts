@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/db";
 import { catchAsync } from "../middleware/catchAsync";
-import { createItemOrden } from "./zodValidation/ItemOrdenValidation";
+import { createItemOrden, updateItemOrden } from "./zodValidation/ItemOrdenValidation";
 
 
 export class ItemOrdenController {
@@ -28,32 +28,75 @@ export class ItemOrdenController {
   });
 
   static getAll = async (req: Request, res: Response) => {
-    const itemsOrden = await prisma.itemOrden.findMany()
+    const { ordenId } = req.params;
+    const validarOrdenExists = await prisma.orden.findUnique({
+      where: { id: Number(ordenId) }
+    })
+    if (!validarOrdenExists) {
+      return res.status(400).json({ message: 'No existe una orden con ese Id' })
+    }
+
+    const itemsOrden = await prisma.itemOrden.findMany({
+      where: {
+        ordenId: Number(ordenId)
+      }
+    });
+
+
     res.status(200).json(itemsOrden);
   };
 
-  // static modify = async (req: Request, res: Response) => {
-  //   const { id } = req.params
-  //   const validatedData = editarOrden.parse(req.body);
+  static modify = async (req: Request, res: Response) => {
+    const { itemOrdenId, ordenId } = req.params
 
-  //   const ordenModificada = await prisma.orden.update({
-  //     where: {
-  //       id: Number(id)
-  //     },
-  //     data: {
-  //       ...validatedData
-  //     }
-  //   });
+    const validarOrdenExists = await prisma.orden.findUnique({
+      where: { id: Number(ordenId) }
+    })
+    if (!validarOrdenExists) {
+      return res.status(400).json({ message: 'No existe una orden con ese Id' })
+    }
 
-  //   res.status(201).json(ordenModificada);
+    const validarItemOrdenExists = await prisma.itemOrden.findUnique({
+      where: { id: Number(itemOrdenId) }
+    })
+    if (!validarItemOrdenExists) {
+      return res.status(400).json({ message: 'No existe una orden con ese Id' })
+    }
 
-  // }
+    const validatedData = updateItemOrden.parse(req.body);
+
+    const ordenModificada = await prisma.itemOrden.update({
+      where: {
+        id: Number(itemOrdenId)
+      },
+      data: {
+        ...validatedData
+      }
+    });
+
+    res.status(201).json(ordenModificada);
+  }
 
   static delete = async (req: Request, res: Response) => {
-    const { id } = req.params
-    await prisma.orden.delete({
+    const { itemOrdenId, ordenId } = req.params
+
+    const validarOrdenExists = await prisma.orden.findUnique({
+      where: { id: Number(ordenId) }
+    })
+    if (!validarOrdenExists) {
+      return res.status(400).json({ message: 'No existe una orden con ese Id' })
+    }
+
+    const validarItemOrdenExists = await prisma.itemOrden.findUnique({
+      where: { id: Number(itemOrdenId) }
+    })
+    if (!validarItemOrdenExists) {
+      return res.status(400).json({ message: 'No existe una orden con ese Id' })
+    }
+
+    await prisma.itemOrden.delete({
       where: {
-        id: Number(id)
+        id: Number(itemOrdenId)
       }
     });
     res.status(204).json({ message: 'Orden Eliminada Correctamente' });

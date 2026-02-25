@@ -3,10 +3,10 @@ import { ItemOrdenController } from "../controllers/ItemOrdenController";
 
 const router = Router();
 
-router.post('/orden/:ordenId', ItemOrdenController.create)
-router.get('/', ItemOrdenController.getAll)
+router.post('/:ordenId', ItemOrdenController.create)
+router.get('/:ordenId', ItemOrdenController.getAll)
 // router.get('/:idItem', ItemOrdenController.getById)
-// router.patch('/:itemId/orden/:ordenId', ItemOrdenController.modify)
-router.delete('/:itemId/orden/:ordenId', ItemOrdenController.delete)
+router.patch('/:itemOrdenId/orden/:ordenId', ItemOrdenController.modify)
+router.delete('/:itemOrdenId/orden/:ordenId', ItemOrdenController.delete)
 
 export default router;  
