@@ -7,7 +7,7 @@ const FRACCIONES_VALIDAS: string[] = [
 ];
 
 const COLORES_PERFIL = ['blanco', 'negro', 'roble'];
-const TIPO_CRISTAL = ['natural liso', 'natural martillado', 'bronze liso', 'bronze martillado', 'azulado liso', 'azulado martillado']
+const TIPO_CRISTAL = ['natural liso', 'natural martillado', 'bronze liso', 'bronze martillado', 'azul liso', 'azul martillado']
 const TIPO_PERFIL = ['p65', 'tradicional', 'p40', 'p92']
 
 const validarMedida = (medida: string) => {

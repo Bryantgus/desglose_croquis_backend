@@ -26,6 +26,6 @@ model ItemOrden {
   colorPerfil String
   tipoCristal String
   vias        Int
-  orden       Orden  @relation(fields: [ordenId], references: [id])
+  orden       Orden  @relation(fields: [ordenId], references: [id], onDelete: Cascade)
   ordenId     Int
 }
