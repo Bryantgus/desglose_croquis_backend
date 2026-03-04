@@ -5,6 +5,7 @@ import OrdenRouter from './routes/OrdenRouter'
 import { globalErrorHandler } from './middleware/errorHandler'
 import cors from 'cors'
 import ItemOrdenRouter from './routes/ItemOrdenRouter'
+import CroquisRouter from './routes/CroquisRouter'
 const app = express()
 
 app.use(cors({
@@ -21,6 +22,7 @@ app.get('/api/server_active', (req, res) => {
 
 app.use('/api/orden', OrdenRouter);
 app.use('/api/item_orden', ItemOrdenRouter)
+app.use('/api/croquis', CroquisRouter)
 app.use(globalErrorHandler);
 
 export default app
