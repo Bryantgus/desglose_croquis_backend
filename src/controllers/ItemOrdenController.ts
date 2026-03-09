@@ -23,27 +23,39 @@ export class ItemOrdenController {
         ...validatedData
       }
     });
+    console.log(nuevaOrden);
+    
 
     res.status(201).json({ message: 'Desglose Creado Correctamente' });
   });
 
-  static getAll = async (req: Request, res: Response) => {
+  static getAllByTipoPerfil = async (req: Request, res: Response) => {
     const { ordenId } = req.params;
+
     const validarOrdenExists = await prisma.orden.findUnique({
       where: { id: Number(ordenId) }
-    })
+    });
+
     if (!validarOrdenExists) {
-      return res.status(400).json({ message: 'No existe una orden con ese Id' })
+      return res.status(400).json({ message: 'No existe una orden con ese Id' });
     }
 
     const itemsOrden = await prisma.itemOrden.findMany({
-      where: {
-        ordenId: Number(ordenId)
-      }
+      where: { ordenId: Number(ordenId) }
     });
 
+    const itemsPerPerfil = itemsOrden
+      .sort((a, b) => a.id - b.id)
+      .reduce((acc, item) => {
+        if (!acc[item.tipoPerfil]) {
+          acc[item.tipoPerfil] = [];
+        }
+        acc[item.tipoPerfil].push(item);
+        return acc;
+      }, {} as Record<string, typeof itemsOrden>);
+    console.log(itemsPerPerfil);
 
-    res.status(200).json(itemsOrden);
+    res.status(200).json(itemsPerPerfil);
   };
 
   static modify = async (req: Request, res: Response) => {
