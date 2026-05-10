@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/config/generated/prisma"]
+  "include": ["src/**/*", "src/generated/prisma"]
 }
