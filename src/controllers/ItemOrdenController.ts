@@ -26,7 +26,7 @@ export class ItemOrdenController {
     console.log(nuevaOrden);
     
 
-    res.status(201).json({ message: 'Desglose Creado Correctamente' });
+    res.status(201).json({ message: 'Mamageuvo Creado Correctamente' });
   });
 
   static getAllByTipoPerfil = async (req: Request, res: Response) => {
