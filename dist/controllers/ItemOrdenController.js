@@ -33,7 +33,9 @@ ItemOrdenController.getAllByTipoPerfil = async (req, res) => {
         where: { id: Number(ordenId) }
     });
     if (!validarOrdenExists) {
-        return res.status(400).json({ message: 'No existe una orden con ese Id' });
+        return res.status(400).json({
+            message: 'No existe una orden con ese Id'
+        });
     }
     const itemsOrden = await db_1.prisma.itemOrden.findMany({
         where: { ordenId: Number(ordenId) }

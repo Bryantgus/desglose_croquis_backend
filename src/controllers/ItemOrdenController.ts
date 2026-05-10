@@ -24,7 +24,7 @@ export class ItemOrdenController {
       }
     });
     console.log(nuevaOrden);
-    
+
 
     res.status(201).json({ message: 'Mamageuvo Creado Correctamente' });
   });
@@ -37,22 +37,35 @@ export class ItemOrdenController {
     });
 
     if (!validarOrdenExists) {
-      return res.status(400).json({ message: 'No existe una orden con ese Id' });
+      return res.status(400).json({
+        message: 'No existe una orden con ese Id'
+      });
     }
 
     const itemsOrden = await prisma.itemOrden.findMany({
       where: { ordenId: Number(ordenId) }
     });
 
+    type ItemOrden = (typeof itemsOrden)[number];
+
     const itemsPerPerfil = itemsOrden
-      .sort((a: any, b: any) => a.id - b.id)
-      .reduce((acc: any[], item: any) => {
-        if (!acc[item.tipoPerfil]) {
-          acc[item.tipoPerfil] = [];
-        }
-        acc[item.tipoPerfil].push(item);
-        return acc;
-      }, {} as Record<string, typeof itemsOrden>);
+      .sort((a: ItemOrden, b: ItemOrden) => a.id - b.id)
+      .reduce(
+        (
+          acc: Record<string, ItemOrden[]>,
+          item: ItemOrden
+        ) => {
+          if (!acc[item.tipoPerfil]) {
+            acc[item.tipoPerfil] = [];
+          }
+
+          acc[item.tipoPerfil].push(item);
+
+          return acc;
+        },
+        {}
+      );
+
     console.log(itemsPerPerfil);
 
     res.status(200).json(itemsPerPerfil);
