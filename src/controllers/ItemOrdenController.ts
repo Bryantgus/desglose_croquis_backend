@@ -45,8 +45,8 @@ export class ItemOrdenController {
     });
 
     const itemsPerPerfil = itemsOrden
-      .sort((a, b) => a.id - b.id)
-      .reduce((acc, item) => {
+      .sort((a: any, b: any) => a.id - b.id)
+      .reduce((acc: any[], item: any) => {
         if (!acc[item.tipoPerfil]) {
           acc[item.tipoPerfil] = [];
         }
